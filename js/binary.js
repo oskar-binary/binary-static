@@ -455,7 +455,6 @@ var ClientBase = function () {
             local_currency_config.decimal_places = +authorize.local_currencies[local_currency_config.currency].fractional_digits;
         }
         set('email', authorize.email);
-        set('fullname', authorize.fullname);
         set('currency', authorize.currency);
         set('is_virtual', +authorize.is_virtual);
         set('session_start', parseInt(moment().valueOf() / 1000));
@@ -1274,11 +1273,23 @@ module.exports = GTM;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var BinarySocket = __webpack_require__(/*! ./socket_base */ "./src/javascript/_common/base/socket_base.js");
 var ClientBase = __webpack_require__(/*! ./client_base */ "./src/javascript/_common/base/client_base.js");
 
 var LiveChat = function () {
     var init = function init() {
         if (window.LiveChatWidget) {
+            BinarySocket.wait('get_settings').then(function (response) {
+                var get_settings = response.get_settings || {};
+                var first_name = get_settings.first_name,
+                    last_name = get_settings.last_name;
+
+                var email = ClientBase.get('email');
+
+                if (email) window.LiveChatWidget.call('set_customer_email', email);
+                if (first_name && last_name) window.LiveChatWidget.call('set_customer_name', first_name + ' ' + last_name);
+            });
+
             window.LiveChatWidget.on('visibility_changed', function (_ref) {
                 var visibility = _ref.visibility;
 
@@ -1286,12 +1297,6 @@ var LiveChat = function () {
                 var session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '' };
 
                 if (visibility === 'maximized' && ClientBase.isLoggedIn()) {
-                    var email = ClientBase.get('email');
-                    var fullname = ClientBase.get('fullname');
-
-                    if (email) window.LiveChatWidget.call('set_customer_email', email);
-                    if (fullname) window.LiveChatWidget.call('set_customer_name', fullname);
-
                     var loginid = ClientBase.get('loginid');
                     var landing_company_shortcode = ClientBase.get('landing_company_shortcode');
                     var currency = ClientBase.get('currency');
@@ -1301,6 +1306,7 @@ var LiveChat = function () {
 
                     window.LiveChatWidget.call('set_session_variables', session_variables);
                 }
+
                 if (visibility === 'maximized' && !ClientBase.isLoggedIn()) {
                     window.LiveChatWidget.call('set_customer_email', ' ');
                     window.LiveChatWidget.call('set_customer_name', ' ');

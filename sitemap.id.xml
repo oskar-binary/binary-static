@@ -11,7 +11,6 @@
 <url> <loc>https://www.binary.me/id/group-history.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/open-positions.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/open-positions/job-details.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
-<url> <loc>https://www.binary.me/id/affiliate/signup.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/legal/us_patents.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/responsible-trading.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/terms-and-conditions.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
@@ -34,7 +33,6 @@
 <url> <loc>https://www.binary.me/id/cashier/payment_agent_listws.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/cashier/payment_methods.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/trading.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
-<url> <loc>https://www.binary.me/id/multi_barriers_trading.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/resources/asset_indexws.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 <url> <loc>https://www.binary.me/id/resources/market_timesws.html</loc> <changefreq>monthly</changefreq> <priority>0.8</priority> </url>
 </urlset>

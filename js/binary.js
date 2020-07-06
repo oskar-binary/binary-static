@@ -455,6 +455,7 @@ var ClientBase = function () {
             local_currency_config.decimal_places = +authorize.local_currencies[local_currency_config.currency].fractional_digits;
         }
         set('email', authorize.email);
+        set('fullname', authorize.fullname);
         set('currency', authorize.currency);
         set('is_virtual', +authorize.is_virtual);
         set('session_start', parseInt(moment().valueOf() / 1000));
@@ -462,13 +463,6 @@ var ClientBase = function () {
         set('user_id', authorize.user_id);
         set('local_currency_config', local_currency_config);
         updateAccountList(authorize.account_list);
-
-        if (window.LiveChatWidget) {
-            window.LiveChatWidget.on('ready', function () {
-                window.LiveChatWidget.call('set_customer_name', 'John Doe');
-                window.LiveChatWidget.call('set_customer_email', authorize.email);
-            });
-        }
     };
 
     var updateAccountList = function updateAccountList(account_list) {
@@ -1265,6 +1259,49 @@ var GTM = function () {
 }();
 
 module.exports = GTM;
+
+/***/ }),
+
+/***/ "./src/javascript/_common/base/livechat.js":
+/*!*************************************************!*\
+  !*** ./src/javascript/_common/base/livechat.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ClientBase = __webpack_require__(/*! ./client_base */ "./src/javascript/_common/base/client_base.js");
+
+var LiveChat = function () {
+
+    var init = function init() {
+        if (window.LiveChatWidget) {
+            // window.LiveChatWidget.on('ready', () => {
+            //     window.LiveChatWidget.call('set_customer_name', 'John Doe');
+            //     // window.LiveChatWidget.call('set_customer_email', authorize.email);
+            // });
+            window.LiveChatWidget.on('visibility_changed', function (_ref) {
+                var visibility = _ref.visibility;
+
+                if (visibility === 'maximized' && ClientBase.isLoggedIn()) {
+                    var email = ClientBase.get('email');
+                    var fullname = ClientBase.get('fullname');
+
+                    if (email) window.LiveChatWidget.call('set_customer_email', email);
+                    if (fullname) window.LiveChatWidget.call('set_customer_name', fullname);
+                }
+            });
+        }
+    };
+
+    return {
+        init: init
+    };
+}();
+
+module.exports = LiveChat;
 
 /***/ }),
 
@@ -9568,6 +9605,7 @@ var BinarySocket = __webpack_require__(/*! ./socket */ "./src/javascript/app/bas
 var ContentVisibility = __webpack_require__(/*! ../common/content_visibility */ "./src/javascript/app/common/content_visibility.js");
 var GTM = __webpack_require__(/*! ../../_common/base/gtm */ "./src/javascript/_common/base/gtm.js");
 var Login = __webpack_require__(/*! ../../_common/base/login */ "./src/javascript/_common/base/login.js");
+var LiveChat = __webpack_require__(/*! ../../_common/base/livechat */ "./src/javascript/_common/base/livechat.js");
 var getElementById = __webpack_require__(/*! ../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var urlLang = __webpack_require__(/*! ../../_common/language */ "./src/javascript/_common/language.js").urlLang;
 var localizeForLang = __webpack_require__(/*! ../../_common/localize */ "./src/javascript/_common/localize.js").forLang;
@@ -9606,6 +9644,7 @@ var BinaryLoader = function () {
         BinaryPjax.init(container, '#content');
 
         ThirdPartyLinks.init();
+        LiveChat.init();
     };
 
     var beforeContentChange = function beforeContentChange() {

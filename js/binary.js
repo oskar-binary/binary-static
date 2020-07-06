@@ -1282,6 +1282,9 @@ var LiveChat = function () {
             window.LiveChatWidget.on('visibility_changed', function (_ref) {
                 var visibility = _ref.visibility;
 
+                // only visible to CS
+                var session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '' };
+
                 if (visibility === 'maximized' && ClientBase.isLoggedIn()) {
                     var email = ClientBase.get('email');
                     var fullname = ClientBase.get('fullname');
@@ -1289,14 +1292,18 @@ var LiveChat = function () {
                     if (email) window.LiveChatWidget.call('set_customer_email', email);
                     if (fullname) window.LiveChatWidget.call('set_customer_name', fullname);
 
-                    // only visible to CS
                     var loginid = ClientBase.get('loginid');
                     var landing_company_shortcode = ClientBase.get('landing_company_shortcode');
                     var currency = ClientBase.get('currency');
                     var residence = ClientBase.get('residence');
 
-                    var session_variables = _extends({}, loginid && { loginid: loginid }, landing_company_shortcode && { landing_company_shortcode: landing_company_shortcode }, currency && { currency: currency }, residence && { residence: residence });
+                    session_variables = _extends({}, loginid && { loginid: loginid }, landing_company_shortcode && { landing_company_shortcode: landing_company_shortcode }, currency && { currency: currency }, residence && { residence: residence });
 
+                    window.LiveChatWidget.call('set_session_variables', session_variables);
+                }
+                if (visibility === 'maximized' && !ClientBase.isLoggedIn()) {
+                    window.LiveChatWidget.call('set_customer_email', ' ');
+                    window.LiveChatWidget.call('set_customer_name', ' ');
                     window.LiveChatWidget.call('set_session_variables', session_variables);
                 }
             });

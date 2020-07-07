@@ -9664,7 +9664,6 @@ var BinaryLoader = function () {
         BinaryPjax.init(container, '#content');
 
         ThirdPartyLinks.init();
-        LiveChat.init();
     };
 
     var beforeContentChange = function beforeContentChange() {
@@ -9693,6 +9692,9 @@ var BinaryLoader = function () {
         ContentVisibility.init().then(function () {
             BinarySocket.wait('authorize', 'website_status', 'landing_company').then(function () {
                 GTM.pushDataLayer({ event: 'page_load' }); // we need website_status.clients_country
+                setTimeout(function () {
+                    return LiveChat.init();
+                }, 1000);
 
                 // first time load.
                 var last_image = $('#content img').last();
